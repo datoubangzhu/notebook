@@ -1,0 +1,108 @@
+<html>
+<head>
+  <title>JQuery Ajax</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/600480 (zh-CN, DDL); Windows/6.1.1 (Win64);"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="846"/>
+<h1>JQuery Ajax</h1>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">请求格式</h2>
+<blockquote style="line-height: 160%; box-sizing: content-box; margin: 15px 0; border-left: 4px solid #ddd; padding: 0 15px; color: #777;">
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333; margin-top: 0; margin-bottom: 0;">ajax参数</p>
+</blockquote>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">简单请求示例</li>
+</ul>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">//展示电脑信息列表
+function listPC() {
+    let search = $(&quot;#search&quot;).val();
+    $(&quot;#pclist&quot;).html(&quot;&quot;);
+    $.ajax({
+        type: &quot;get&quot;,
+        url: &quot;http://127.0.0.1:9000/pc/list&quot;+&quot;?param=&quot;+search,
+        success: function (data,status) {
+            $(&quot;#goods_list&quot;).html(&quot;&quot;);
+            if(data==null || data.length===0){
+                $(&quot;#pclist&quot;).html(&quot;没有数据！&quot;);
+            }
+            $.each(data,function(i, result){
+                let pcid = result.pcId;
+                let brand = result.brand;
+                switch (brand) {
+                    case 1: brand = &quot;华为&quot;;break;
+                    case 2: brand = &quot;华硕&quot;;break;
+                    case 3: brand = &quot;戴尔&quot;;break;
+                    case 4: brand = &quot;小米&quot;;break;
+                    default:
+                }
+                let pcName = result.pcName;
+                let os = result.os;
+                switch (os) {
+                    case 1: os = &quot;Windows10&quot;;break;
+                    case 2: os = &quot;Windows8&quot;;break;
+                    case 3: os = &quot;Windows7&quot;;break;
+                    case 4: os = &quot;Ubuntu&quot;;break;
+                    default:
+                }
+                let price = result.price;
+                let amount = result.amount;
+                if(amount&gt;=50){
+                    amount = &quot;&lt;span style='color:red;'&gt;&quot;+amount+&quot;&lt;/span&gt;&quot;
+                }
+                //tr td 行元素拼接构造 
+                let row = &quot;&lt;tr &gt;&quot;+
+                    &quot;&lt;td name='pcId' hidden='hidden'&gt;&quot;+pcid+&quot;&lt;/td&gt;&quot;+
+                    &quot;&lt;td name='pcName'&gt;&quot;+pcName+&quot;&lt;/td&gt;&quot;+
+                    &quot;&lt;td name='brand'&gt;&quot;+brand+&quot;&lt;/td&gt;&quot;+
+                    &quot;&lt;td name='os'&gt;&quot;+os+&quot;&lt;/td&gt;&quot;+
+                    &quot;&lt;td name='price'&gt;&quot;+price+&quot;&lt;/td&gt;&quot;+
+                    &quot;&lt;td name='amount' &gt;&quot;+amount+&quot;&lt;/td&gt;&quot;+
+                    &quot;&lt;td&gt;&quot; +
+                    &quot;&lt;a  data-toggle='modal' data-target='#myModal'&gt;&lt;i &gt;&lt;/i&gt;&lt;span&gt;编辑&lt;/span&gt;&lt;/a&gt;&quot;+
+                    &quot;&lt;a  &gt; &lt;i &gt;&lt;/i&gt;&lt;span&gt;删除&lt;/span&gt; &lt;/a&gt;&quot; +
+                    &quot;&lt;/td&gt;&lt;/tr&gt;&quot;;
+                    //逐行添加行元素
+                $(&quot;#pclist&quot;).html($(&quot;#pclist&quot;).html() + row);
+            });
+        },
+        error: function (data,status) {
+            alert(&quot;请求失败：&quot;+ data.responseJSON.message);
+            $(&quot;#pclist&quot;).html(&quot;没有数据！&quot;);
+        }
+    });
+}
+
+</code></pre>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">其中页面表单为</li>
+</ul>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">`&lt;div &gt;
+&lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; &gt;
+		&lt;thead&gt;
+					&lt;tr&gt;
+                            &lt;th&gt;电脑名称&lt;/th&gt;
+                            &lt;th&gt;电脑品牌&lt;/th&gt;
+                            &lt;th&gt;操作系统&lt;/th&gt;
+                            &lt;th&gt;商品单价&lt;/th&gt;
+                            &lt;th&gt;已购数量&lt;/th&gt;
+                            &lt;th width=&quot;268&quot;&gt;操作&lt;/th&gt;
+					&lt;/tr&gt;
+				&lt;/thead&gt;
+				&lt;tbody &gt;
+				&lt;/tbody&gt;
+			&lt;/table&gt;
+&lt;/div&gt;           
+```
+</code></pre>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%23%20%E8%AF%B7%E6%B1%82%E6%A0%BC%E5%BC%8F%0A%3Eajax%E5%8F%82%E6%95%B0%0A-%20%E7%AE%80%E5%8D%95%E8%AF%B7%E6%B1%82%E7%A4%BA%E4%BE%8B%0A%60%60%60%0A%2F%2F%E5%B1%95%E7%A4%BA%E7%94%B5%E8%84%91%E4%BF%A1%E6%81%AF%E5%88%97%E8%A1%A8%0Afunction%20listPC()%20%7B%0A%20%20%20%20let%20search%20%3D%20%24(%22%23search%22).val()%3B%0A%20%20%20%20%24(%22%23pclist%22).html(%22%22)%3B%0A%20%20%20%20%24.ajax(%7B%0A%20%20%20%20%20%20%20%20type%3A%20%22get%22%2C%0A%20%20%20%20%20%20%20%20url%3A%20%22http%3A%2F%2F127.0.0.1%3A9000%2Fpc%2Flist%22%2B%22%3Fparam%3D%22%2Bsearch%2C%0A%20%20%20%20%20%20%20%20success%3A%20function%20(data%2Cstatus)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%24(%22%23goods_list%22).html(%22%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20if(data%3D%3Dnull%20%7C%7C%20data.length%3D%3D%3D0)%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%24(%22%23pclist%22).html(%22%E6%B2%A1%E6%9C%89%E6%95%B0%E6%8D%AE%EF%BC%81%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%24.each(data%2Cfunction(i%2C%20result)%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20let%20pcid%20%3D%20result.pcId%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20let%20brand%20%3D%20result.brand%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20switch%20(brand)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20case%201%3A%20brand%20%3D%20%22%E5%8D%8E%E4%B8%BA%22%3Bbreak%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20case%202%3A%20brand%20%3D%20%22%E5%8D%8E%E7%A1%95%22%3Bbreak%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20case%203%3A%20brand%20%3D%20%22%E6%88%B4%E5%B0%94%22%3Bbreak%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20case%204%3A%20brand%20%3D%20%22%E5%B0%8F%E7%B1%B3%22%3Bbreak%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20default%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20let%20pcName%20%3D%20result.pcName%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20let%20os%20%3D%20result.os%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20switch%20(os)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20case%201%3A%20os%20%3D%20%22Windows10%22%3Bbreak%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20case%202%3A%20os%20%3D%20%22Windows8%22%3Bbreak%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20case%203%3A%20os%20%3D%20%22Windows7%22%3Bbreak%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20case%204%3A%20os%20%3D%20%22Ubuntu%22%3Bbreak%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20default%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20let%20price%20%3D%20result.price%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20let%20amount%20%3D%20result.amount%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if(amount%3E%3D50)%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20amount%20%3D%20%22%3Cspan%20style%3D'color%3Ared%3B'%3E%22%2Bamount%2B%22%3C%2Fspan%3E%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2F%2Ftr%20td%20%E8%A1%8C%E5%85%83%E7%B4%A0%E6%8B%BC%E6%8E%A5%E6%9E%84%E9%80%A0%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20let%20row%20%3D%20%22%3Ctr%20id%3D'%22%2Bpcid%2B%22'%3E%22%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22%3Ctd%20name%3D'pcId'%20hidden%3D'hidden'%3E%22%2Bpcid%2B%22%3C%2Ftd%3E%22%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22%3Ctd%20name%3D'pcName'%3E%22%2BpcName%2B%22%3C%2Ftd%3E%22%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22%3Ctd%20name%3D'brand'%3E%22%2Bbrand%2B%22%3C%2Ftd%3E%22%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22%3Ctd%20name%3D'os'%3E%22%2Bos%2B%22%3C%2Ftd%3E%22%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22%3Ctd%20name%3D'price'%3E%22%2Bprice%2B%22%3C%2Ftd%3E%22%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22%3Ctd%20name%3D'amount'%20%3E%22%2Bamount%2B%22%3C%2Ftd%3E%22%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22%3Ctd%3E%22%20%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22%3Ca%20%20onclick%3D'updatePC(this)'%20class%3D'table_btn%20table_edit%20edit_btn'%20%20data-toggle%3D'modal'%20data-target%3D'%23myModal'%3E%3Ci%20class%3D'fa%20fa-edit'%3E%3C%2Fi%3E%3Cspan%3E%E7%BC%96%E8%BE%91%3C%2Fspan%3E%3C%2Fa%3E%22%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22%3Ca%20%20onclick%3D'deletePC(this)'%20class%3D'table_btn%20table_del%20del_btn'%3E%20%3Ci%20class%3D'fa%20fa-trash-o'%3E%3C%2Fi%3E%3Cspan%3E%E5%88%A0%E9%99%A4%3C%2Fspan%3E%20%3C%2Fa%3E%22%20%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22%3C%2Ftd%3E%3C%2Ftr%3E%22%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%E9%80%90%E8%A1%8C%E6%B7%BB%E5%8A%A0%E8%A1%8C%E5%85%83%E7%B4%A0%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%24(%22%23pclist%22).html(%24(%22%23pclist%22).html()%20%2B%20row)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D)%3B%0A%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20error%3A%20function%20(data%2Cstatus)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20alert(%22%E8%AF%B7%E6%B1%82%E5%A4%B1%E8%B4%A5%EF%BC%9A%22%2B%20data.responseJSON.message)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%24(%22%23pclist%22).html(%22%E6%B2%A1%E6%9C%89%E6%95%B0%E6%8D%AE%EF%BC%81%22)%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D)%3B%0A%7D%0A%0A%60%60%60%0A-%20%E5%85%B6%E4%B8%AD%E9%A1%B5%E9%9D%A2%E8%A1%A8%E5%8D%95%E4%B8%BA%0A%60%60%60%60%0A%60%3Cdiv%20class%3D%22cont_box%22%3E%0A%3Ctable%20border%3D%220%22%20cellspacing%3D%220%22%20cellpadding%3D%220%22%20class%3D%22table%22%20id%3D%22table_box%22%3E%0A%09%09%3Cthead%3E%0A%09%09%09%09%09%3Ctr%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cth%3E%E7%94%B5%E8%84%91%E5%90%8D%E7%A7%B0%3C%2Fth%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cth%3E%E7%94%B5%E8%84%91%E5%93%81%E7%89%8C%3C%2Fth%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cth%3E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%3C%2Fth%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cth%3E%E5%95%86%E5%93%81%E5%8D%95%E4%BB%B7%3C%2Fth%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cth%3E%E5%B7%B2%E8%B4%AD%E6%95%B0%E9%87%8F%3C%2Fth%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cth%20width%3D%22268%22%3E%E6%93%8D%E4%BD%9C%3C%2Fth%3E%0A%09%09%09%09%09%3C%2Ftr%3E%0A%09%09%09%09%3C%2Fthead%3E%0A%09%09%09%09%3Ctbody%20id%3D%22pclist%22%3E%0A%09%09%09%09%3C%2Ftbody%3E%0A%09%09%09%3C%2Ftable%3E%0A%3C%2Fdiv%3E%20%20%20%20%20%20%20%20%20%20%20%0A%60%60%60%0A</center></span>
+</div></body></html> 

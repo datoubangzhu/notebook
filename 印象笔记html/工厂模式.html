@@ -1,0 +1,112 @@
+<html>
+<head>
+  <title>工厂模式</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/600480 (zh-CN, DDL); Windows/6.1.1 (Win64);"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="985"/>
+<h1>工厂模式</h1>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">简单工厂模式：</h3>
+<h6 style="line-height: 160%; box-sizing: content-box; font-size: 13px; color: #333;">1. 根据参数选择具体实例化的对象</h6>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">public interface Product {
+//接口
+}
+
+public class Tv implements Product {
+//实现类1
+    public Tv(){
+        System.out.println(&quot;电视被制造了&quot;);
+    }
+}
+
+public class Car implements Product {
+//实现类2
+    public Car(){
+        System.out.println(&quot;汽车被制造了&quot;);
+    }
+}
+
+public class ProductFactory {
+//========核心代码==根据参数选择具体示例化的对象
+    public static Product produce(String productName) throws Exception {
+        switch (productName) {
+            case &quot;tv&quot;:
+                return new Tv();
+            case &quot;car&quot;:
+                return new Car();
+            default:
+                throw new Exception(&quot;没有该产品&quot;);
+        }
+    }
+}
+</code></pre>
+<h6 style="line-height: 160%; box-sizing: content-box; font-size: 13px; color: #333;">2.根据反射获取对象</h6>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">
+public class ProductFactory2 {
+    public static Product produce(String className) throws Exception {
+        try {
+            Product product = (Product) Class.forName(className).newInstance();
+            return product;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        throw new Exception(&quot;没有该产品&quot;);
+    }
+}
+</code></pre>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">工厂方法模式</h3>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">说的简单点，简单工厂是基于switch或者基于反射来实现的。<br/>
+而工厂方法模式是基于多态实现的。它把“创建对象的功能交给了具体的工厂实现子类来实现”</p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">//工厂接口
+public interface Factory {
+    public Product produce();
+}
+//产品接口
+public interface Product{} 
+//产品类
+public class Tv implements Product {
+    public  Tv() {
+        System.out.println(&quot;电视被制造了&quot;);
+    }
+}
+
+public class Car implements Product {
+    public  Car(){
+        System.out.println(&quot;汽车被制造了&quot;);
+    }
+}
+
+//工厂类
+public class TvFactory implements Factory {
+    @Override
+    public  Product  produce() {
+        return new Tv();
+    }
+}
+
+public class CarFactory implements Factory {
+    @Override
+    public  Product  produce() {
+        return new Car();
+    }
+}
+//测试
+Factory factory = new TvFactory();
+Product product = factory.produce();
+product.
+
+</code></pre>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">抽象工厂模式</h3>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;"><strong style="line-height: 160%; box-sizing: content-box; font-weight: 700;">参考博客：https://www.jianshu.com/p/bf8341c75304</strong></p>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%23%23%20%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%EF%BC%9A%0A%23%23%23%23%23%23%201.%20%E6%A0%B9%E6%8D%AE%E5%8F%82%E6%95%B0%E9%80%89%E6%8B%A9%E5%85%B7%E4%BD%93%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%AF%B9%E8%B1%A1%0A%60%60%60%0Apublic%20interface%20Product%20%7B%0A%2F%2F%E6%8E%A5%E5%8F%A3%0A%7D%0A%0Apublic%20class%20Tv%20implements%20Product%20%7B%0A%2F%2F%E5%AE%9E%E7%8E%B0%E7%B1%BB1%0A%C2%A0%C2%A0%C2%A0%C2%A0public%20Tv()%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0System.out.println(%22%E7%94%B5%E8%A7%86%E8%A2%AB%E5%88%B6%E9%80%A0%E4%BA%86%22)%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%7D%0A%0Apublic%20class%20Car%20implements%20Product%20%7B%0A%2F%2F%E5%AE%9E%E7%8E%B0%E7%B1%BB2%0A%C2%A0%C2%A0%C2%A0%C2%A0public%20Car()%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0System.out.println(%22%E6%B1%BD%E8%BD%A6%E8%A2%AB%E5%88%B6%E9%80%A0%E4%BA%86%22)%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%7D%0A%0Apublic%20class%20ProductFactory%20%7B%0A%2F%2F%3D%3D%3D%3D%3D%3D%3D%3D%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%3D%3D%E6%A0%B9%E6%8D%AE%E5%8F%82%E6%95%B0%E9%80%89%E6%8B%A9%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B%E5%8C%96%E7%9A%84%E5%AF%B9%E8%B1%A1%0A%C2%A0%C2%A0%C2%A0%C2%A0public%20static%20Product%20produce(String%20productName)%20throws%20Exception%20%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0switch%20(productName)%20%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0case%20%22tv%22%3A%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0return%20new%20Tv()%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0case%20%22car%22%3A%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0return%20new%20Car()%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0default%3A%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0throw%20new%20Exception(%22%E6%B2%A1%E6%9C%89%E8%AF%A5%E4%BA%A7%E5%93%81%22)%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%7D%0A%60%60%60%0A%23%23%23%23%23%23%202.%E6%A0%B9%E6%8D%AE%E5%8F%8D%E5%B0%84%E8%8E%B7%E5%8F%96%E5%AF%B9%E8%B1%A1%0A%60%60%60%0A%0Apublic%20class%20ProductFactory2%20%7B%0A%20%20%20%20public%20static%20Product%20produce(String%20className)%20throws%20Exception%20%7B%0A%20%20%20%20%20%20%20%20try%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20Product%20product%20%3D%20(Product)%20Class.forName(className).newInstance()%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20product%3B%0A%20%20%20%20%20%20%20%20%7D%20catch%20(Exception%20e)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20e.printStackTrace()%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20throw%20new%20Exception(%22%E6%B2%A1%E6%9C%89%E8%AF%A5%E4%BA%A7%E5%93%81%22)%3B%0A%20%20%20%20%7D%0A%7D%0A%60%60%60%0A%0A%20%23%23%23%20%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F%0A%20%E8%AF%B4%E7%9A%84%E7%AE%80%E5%8D%95%E7%82%B9%EF%BC%8C%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%98%AF%E5%9F%BA%E4%BA%8Eswitch%E6%88%96%E8%80%85%E5%9F%BA%E4%BA%8E%E5%8F%8D%E5%B0%84%E6%9D%A5%E5%AE%9E%E7%8E%B0%E7%9A%84%E3%80%82%0A%20%E8%80%8C%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F%E6%98%AF%E5%9F%BA%E4%BA%8E%E5%A4%9A%E6%80%81%E5%AE%9E%E7%8E%B0%E7%9A%84%E3%80%82%E5%AE%83%E6%8A%8A%E2%80%9C%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%8A%9F%E8%83%BD%E4%BA%A4%E7%BB%99%E4%BA%86%E5%85%B7%E4%BD%93%E7%9A%84%E5%B7%A5%E5%8E%82%E5%AE%9E%E7%8E%B0%E5%AD%90%E7%B1%BB%E6%9D%A5%E5%AE%9E%E7%8E%B0%E2%80%9D%0A%20%0A%60%60%60%0A%2F%2F%E5%B7%A5%E5%8E%82%E6%8E%A5%E5%8F%A3%0Apublic%20interface%20Factory%20%7B%0A%20%20%20%20public%20Product%20produce()%3B%0A%7D%0A%2F%2F%E4%BA%A7%E5%93%81%E6%8E%A5%E5%8F%A3%0Apublic%20interface%20Product%7B%7D%20%0A%2F%2F%E4%BA%A7%E5%93%81%E7%B1%BB%0Apublic%20class%20Tv%20implements%20Product%20%7B%0A%20%20%20%20public%20%20Tv()%20%7B%0A%20%20%20%20%20%20%20%20System.out.println(%22%E7%94%B5%E8%A7%86%E8%A2%AB%E5%88%B6%E9%80%A0%E4%BA%86%22)%3B%0A%20%20%20%20%7D%0A%7D%0A%0Apublic%20class%20Car%20implements%20Product%20%7B%0A%20%20%20%20public%20%20Car()%7B%0A%20%20%20%20%20%20%20%20System.out.println(%22%E6%B1%BD%E8%BD%A6%E8%A2%AB%E5%88%B6%E9%80%A0%E4%BA%86%22)%3B%0A%20%20%20%20%7D%0A%7D%0A%0A%2F%2F%E5%B7%A5%E5%8E%82%E7%B1%BB%0Apublic%20class%20TvFactory%20implements%20Factory%20%7B%0A%20%20%20%20%40Override%0A%20%20%20%20public%20%20Product%20%20produce()%20%7B%0A%20%20%20%20%20%20%20%20return%20new%20Tv()%3B%0A%20%20%20%20%7D%0A%7D%0A%0Apublic%20class%20CarFactory%20implements%20Factory%20%7B%0A%20%20%20%20%40Override%0A%20%20%20%20public%20%20Product%20%20produce()%20%7B%0A%20%20%20%20%20%20%20%20return%20new%20Car()%3B%0A%20%20%20%20%7D%0A%7D%0A%2F%2F%E6%B5%8B%E8%AF%95%0AFactory%20factory%20%3D%20new%20TvFactory()%3B%0AProduct%20product%20%3D%20factory.produce()%3B%0Aproduct.%0A%0A%60%60%60%0A%0A%23%23%23%20%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%0A%0A%0A%0A**%E5%8F%82%E8%80%83%E5%8D%9A%E5%AE%A2%EF%BC%9Ahttps%3A%2F%2Fwww.jianshu.com%2Fp%2Fbf8341c75304**</center></span>
+</div></body></html> 
